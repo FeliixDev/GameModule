@@ -1,0 +1,7 @@
+name: GameModule
+author: Feliix_
+main: me.felix.gamemodule.GameModuleBootstrap
+version: 1.20
+
+commands:
+  gamemodule:
