@@ -3,6 +3,7 @@ package me.felix.gamemodule;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.felix.gamemodule.commands.GameModuleCommand;
+import me.felix.gamemodule.commands.completer.GameModuleCommandTabCompleter;
 import me.felix.gamemodule.exception.IllegalModuleDescriptionException;
 import me.felix.gamemodule.file.CoreServerSettings;
 import me.felix.gamemodule.file.FileProvider;
@@ -69,6 +70,8 @@ public class GameModuleBootstrap extends JavaPlugin {
 
     private void initCommands() {
         getCommand("gamemodule").setExecutor(new GameModuleCommand());
+
+        getCommand("gamemodule").setTabCompleter(new GameModuleCommandTabCompleter());
     }
 
     @Override

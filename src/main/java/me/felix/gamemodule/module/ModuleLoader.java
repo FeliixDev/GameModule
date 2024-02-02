@@ -1,5 +1,6 @@
 package me.felix.gamemodule.module;
 
+import lombok.Getter;
 import me.felix.gamemodule.GameModuleBootstrap;
 import me.felix.gamemodule.exception.IllegalModuleDescriptionException;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -20,6 +21,7 @@ public class ModuleLoader {
 
     private final GameModuleBootstrap gameModule = GameModuleBootstrap.getInstance();
 
+    @Getter
     private final File file;
 
     public ModuleLoader() {
@@ -28,7 +30,7 @@ public class ModuleLoader {
 
     public void loadModule(String name, Consumer<Boolean> consumer) {
         Arrays.stream(file.listFiles())
-                .filter(files -> files.getName().toLowerCase().contains(name))
+                .filter(files -> files.getName().toLowerCase().contains(name.toLowerCase()))
                 .findFirst()
                 .ifPresentOrElse(file -> {
 
