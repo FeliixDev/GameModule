@@ -5,12 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.net.Proxy;
-import java.util.Arrays;
-import java.util.Objects;
 
 public class FileProvider {
 

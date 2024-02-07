@@ -1,16 +1,18 @@
 package me.felix.gamemodule.module;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import me.felix.gamemodule.GameModuleBootstrap;
 import me.felix.gamemodule.exception.IllegalModuleDescriptionException;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.function.Consumer;
@@ -38,22 +40,20 @@ public class ModuleLoader {
                         JarFile jarFile = new JarFile(file.getPath());
 
                         Enumeration<JarEntry> entries = jarFile.entries();
-                        while (entries.hasMoreElements()) {
-                            JarEntry entry = entries.nextElement();
+                        entries.asIterator().forEachRemaining(jarEntry -> {
+                            System.out.println(jarEntry.getName());
 
-                            if (!entry.isDirectory() && entry.getName().equalsIgnoreCase("module.yml")) {
-                                System.out.println(entry);
+                            if (!jarEntry.isDirectory() && jarEntry.getName().equalsIgnoreCase("module.yml")) {
+                                System.out.println(jarEntry);
+                                System.out.println("JarEntry Real Name: " + jarEntry.getRealName() + " | JarEntry name: " + jarEntry.getName());
 
-                                String classContent = readClassContent(jarFile, entry);
+                                String classContent = readClassContent(jarFile, jarEntry);
 
-                                System.out.println("Inhalt:");
-                                System.out.println(classContent);
-                                System.out.println("------------");
+                                findAndLoadClass(classContent, jarFile, file);
 
                                 //throw new IllegalModuleDescriptionException("Description is not correct. Please check.");
                             }
-                        }
-
+                        });
                         consumer.accept(true);
                         jarFile.close();
                     } catch (IOException /*| IllegalModuleDescriptionException*/ e) {
@@ -61,6 +61,52 @@ public class ModuleLoader {
                     }
 
                 }, () -> consumer.accept(false));
+    }
+
+    @SneakyThrows
+    private void findAndLoadClass(String description, JarFile jarFile, File file) {
+        if(!description.contains("main:")) {
+            throw new IllegalModuleDescriptionException("Description is not correct. Please check.");
+        }
+
+        String className = description
+                .replace("main:", "").trim().replace(".", "/") + ".class";
+
+
+        System.out.println(className);
+
+        JarEntry jarEntry = jarFile.getJarEntry(className);
+        if(jarEntry == null) {
+            throw new IllegalModuleDescriptionException(className + " is null. Please check your description");
+        }
+
+       /*
+       Klasse laden.
+        */
+
+        URLClassLoader classLoader = new URLClassLoader(new URL[]{new URL("jar:file:" + file.getPath() + "!/")});
+
+        // Klasse laden
+        String classLoadName = description
+                .replace("main:", "")
+                .replace("/", ".").trim();
+        Class<?> loadedClass = classLoader.loadClass(classLoadName);
+        // Instanz der Klasse erstellen
+        Object instance = loadedClass.newInstance();
+
+        // Jetzt kannst du die Instanz verwenden
+        // ...
+
+        if(instance instanceof Module) {
+            Module module = (Module) instance;
+
+            module.enableModule();
+        }
+
+        // Vergiss nicht, den ClassLoader zu schließen, wenn du fertig bist
+        classLoader.close();
+
+        Bukkit.broadcast(MiniMessage.miniMessage().deserialize("<green>Class found"));
     }
 
     public void unloadModule() {
