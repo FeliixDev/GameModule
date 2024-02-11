@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 import me.felix.gamemodule.GameModuleBootstrap;
 import me.felix.gamemodule.exception.IllegalModuleDescriptionException;
 import me.felix.gamemodule.file.CoreServerSettings;
+import me.felix.gamemodule.listener.custom.SimulatePlayerJoinEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -115,6 +116,8 @@ public class ModuleLoader {
 
             module.setPluginInstance(gameModule);
             module.enableModule();
+
+            gameModule.getServer().getOnlinePlayers().forEach(players -> gameModule.getServer().getPluginManager().callEvent(new SimulatePlayerJoinEvent(players)));
         }
 
         classLoader.close();
