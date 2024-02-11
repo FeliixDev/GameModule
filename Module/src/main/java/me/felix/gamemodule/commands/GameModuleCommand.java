@@ -36,6 +36,13 @@ public class GameModuleCommand implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("load")) {
                     String module = args[1];
 
+                    if(gameModule.getModuleLoader().getModule() != null) {
+                        commandSender.sendMessage(MiniMessage.miniMessage().deserialize(
+                                gameModule.getPrefix() + "<red>Momentan ist bereits ein Module geladen. Nutze /gamemodule unload, um es zu entladen. Danach kannst Du ein neues laden."
+                        ));
+                        break;
+                    }
+
                     gameModule.getModuleLoader().loadModule(module, success -> {
                         if (success) {
                             commandSender.sendMessage(MiniMessage.miniMessage().deserialize(

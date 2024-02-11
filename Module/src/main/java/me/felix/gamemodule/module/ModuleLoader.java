@@ -52,8 +52,6 @@ public class ModuleLoader {
 
                         Enumeration<JarEntry> entries = jarFile.entries();
                         entries.asIterator().forEachRemaining(jarEntry -> {
-                            System.out.println(jarEntry.getName());
-
                             if (!jarEntry.isDirectory() && jarEntry.getName().equalsIgnoreCase("module.yml")) {
 
                                 String classContent = readClassContent(jarFile, jarEntry);
@@ -104,6 +102,12 @@ public class ModuleLoader {
 
         Object instance = loadedClass.getDeclaredConstructor().newInstance();
 
+        if(gameModule.getListeners() != null) {
+            for (Listener listener : gameModule.getListeners()) {
+                HandlerList.unregisterAll(listener);
+            }
+        }
+
         if (instance instanceof Module) {
             Module module = (Module) instance;
 
@@ -137,6 +141,8 @@ public class ModuleLoader {
         commandSender.sendMessage(MiniMessage.miniMessage().deserialize(
                 gameModule.getPrefix() + "<green>Module wurde entladen."
         ));
+
+        gameModule.initListener();
     }
 
     public void listModules(CommandSender commandSender) {

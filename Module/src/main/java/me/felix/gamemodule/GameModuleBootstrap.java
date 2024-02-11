@@ -1,14 +1,16 @@
 package me.felix.gamemodule;
 
 import lombok.Getter;
+import me.felix.gamemodule.listener.world.BlockBreakListener;
+import me.felix.gamemodule.listener.world.WeatherChangeListener;
 import me.felix.gamemodule.module.ModuleLoader;
 import me.felix.gamemodule.module.ModuleProvider;
 import me.felix.gamemodule.commands.GameModuleCommand;
 import me.felix.gamemodule.commands.completer.GameModuleCommandTabCompleter;
 import me.felix.gamemodule.file.CoreServerSettings;
 import me.felix.gamemodule.file.FileProvider;
-import me.felix.gamemodule.listener.PlayerJoinListener;
-import me.felix.gamemodule.listener.PlayerQuitListener;
+import me.felix.gamemodule.listener.player.PlayerJoinListener;
+import me.felix.gamemodule.listener.player.PlayerQuitListener;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,6 +29,8 @@ public class GameModuleBootstrap extends JavaPlugin {
     private ModuleLoader moduleLoader;
     @Getter
     private ModuleProvider moduleProvider;
+    @Getter
+    private Listener[] listeners;
 
     @Override
     public void onEnable() {
@@ -41,17 +45,23 @@ public class GameModuleBootstrap extends JavaPlugin {
         initCommands();
     }
 
-    private void initListener() {
+    public void initListener() {
         if (!CoreServerSettings.REGISTER_LISTENER) {
             return;
         }
 
         PluginManager pluginManager = getServer().getPluginManager();
 
-        for (Listener listener : new Listener[]{
-                new PlayerJoinListener(),
-                new PlayerQuitListener()
-        }) {
+        if(listeners == null) {
+            this.listeners = new Listener[]{
+                    new PlayerJoinListener(),
+                    new PlayerQuitListener(),
+                    new BlockBreakListener(),
+                    new WeatherChangeListener()
+            };
+        }
+
+        for (Listener listener : listeners) {
             pluginManager.registerEvents(listener, this);
         }
         ;
