@@ -13,7 +13,7 @@ public class GameModuleCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        if(!commandSender.hasPermission("gamemodulecore.command.gamemodule")) {
+        if (!commandSender.hasPermission("gamemodulecore.command.gamemodule")) {
             commandSender.sendMessage(
                     MiniMessage.miniMessage().deserialize("<red>Du hast nicht genügend Rechte für diesen Command!")
             );
@@ -33,11 +33,11 @@ public class GameModuleCommand implements CommandExecutor {
                 break;
 
             case 2:
-                if(args[0].equalsIgnoreCase("load")) {
+                if (args[0].equalsIgnoreCase("load")) {
                     String module = args[1];
 
                     gameModule.getModuleLoader().loadModule(module, success -> {
-                        if(success) {
+                        if (success) {
                             commandSender.sendMessage(MiniMessage.miniMessage().deserialize(
                                     "<green>Module wurde gefunden."
                             ));

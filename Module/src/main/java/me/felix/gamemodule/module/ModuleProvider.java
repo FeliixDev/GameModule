@@ -5,7 +5,8 @@ import lombok.Setter;
 
 public class ModuleProvider {
 
-    @Getter@Setter
+    @Getter
+    @Setter
     private Module module;
 
     public ModuleProvider() {

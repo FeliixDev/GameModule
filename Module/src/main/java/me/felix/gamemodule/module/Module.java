@@ -11,7 +11,8 @@ import java.io.File;
 
 public abstract class Module {
 
-    @Getter@Setter
+    @Getter
+    @Setter
     private Plugin pluginInstance;
 
     @Getter

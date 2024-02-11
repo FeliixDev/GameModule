@@ -42,18 +42,19 @@ public class GameModuleBootstrap extends JavaPlugin {
     }
 
     private void initListener() {
-        if(!CoreServerSettings.REGISTER_LISTENER) {
+        if (!CoreServerSettings.REGISTER_LISTENER) {
             return;
         }
 
         PluginManager pluginManager = getServer().getPluginManager();
 
-        for(Listener listener : new Listener[]{
+        for (Listener listener : new Listener[]{
                 new PlayerJoinListener(),
                 new PlayerQuitListener()
         }) {
-              pluginManager.registerEvents(listener, this);
-        };
+            pluginManager.registerEvents(listener, this);
+        }
+        ;
     }
 
     private void initCommands() {

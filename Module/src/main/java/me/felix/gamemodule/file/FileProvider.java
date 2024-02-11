@@ -20,7 +20,7 @@ public class FileProvider {
         file = new File("plugins/gamemodule-file/modules");
         settingsFile = new File("plugins/gamemodule-file", "settings.yml");
 
-        if(!file.exists()) {
+        if (!file.exists()) {
             file.mkdirs();
 
             settingFileConfiguration = YamlConfiguration.loadConfiguration(settingsFile);
@@ -36,12 +36,13 @@ public class FileProvider {
 
     /**
      * Speichert die Klasse in eine File
-     * @param object (Klasse, von wo die Variabeln genommen werden)
+     *
+     * @param object            (Klasse, von wo die Variabeln genommen werden)
      * @param fileConfiguration
      * @param file
      */
     @SneakyThrows
-    private void saveClassToFile(Object object, FileConfiguration fileConfiguration, File file)  {
+    private void saveClassToFile(Object object, FileConfiguration fileConfiguration, File file) {
         Class clazz = object.getClass();
 
         for (Field declaredField : clazz.getDeclaredFields()) {
@@ -57,7 +58,8 @@ public class FileProvider {
 
     /**
      * Lädt die Klasse aus der File
-     * @param object (Klasse, wo die Daten aus der File eingefügt werden)
+     *
+     * @param object            (Klasse, wo die Daten aus der File eingefügt werden)
      * @param fileConfiguration
      */
     @SneakyThrows

@@ -18,27 +18,23 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
 
         //state check
-        if(CoreServerSettings.JOIN_MESSAGE) {
-            event.joinMessage(
-                    MiniMessage.miniMessage().deserialize(
-                            gameModule.getPrefix() + player.getName() + " <white>hat den Server betreten"
-                    )
-            );
+        if (CoreServerSettings.JOIN_MESSAGE) {
+            event.joinMessage(MiniMessage.miniMessage().deserialize(
+                    gameModule.getPrefix() + player.getName() + " <white>hat den Server betreten"
+            ));
 
-            player.sendMessage(
-                    MiniMessage.miniMessage().deserialize(
-                            "<red>Du kannst folgende Commands verwenden:\n" +
-                                    "<red>/gamemodule load <game>\n" +
-                                    "<red>/gamemodule list"
-                    )
-            );
+            player.sendMessage(MiniMessage.miniMessage().deserialize(
+                    "<red>Du kannst folgende Commands verwenden:\n" +
+                            "<red>/gamemodule load <game>\n" +
+                            "<red>/gamemodule list"
+            ));
         }
     }
 
     @EventHandler
     public void handleLogin(PlayerLoginEvent event) {
-        if(CoreServerSettings.MAINTENANCE) {
-            if(event.getResult() == PlayerLoginEvent.Result.KICK_WHITELIST) {
+        if (CoreServerSettings.MAINTENANCE) {
+            if (event.getResult() == PlayerLoginEvent.Result.KICK_WHITELIST) {
                 event.setKickMessage(
                         "§cWartung" +
                                 "\n " +

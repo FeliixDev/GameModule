@@ -27,13 +27,13 @@ public class GameModuleCommandTabCompleter implements TabCompleter {
             }
 
             case 2 -> {
-                if(!args[0].equalsIgnoreCase("load")) {
+                if (!args[0].equalsIgnoreCase("load")) {
                     return new ArrayList<>();
                 }
 
                 File[] files = gameModule.getModuleLoader().getFile().listFiles();
 
-                if(files == null || files.length == 0) {
+                if (files == null || files.length == 0) {
                     return new ArrayList<>();
                 }
 

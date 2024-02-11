@@ -33,7 +33,8 @@ public class ModuleLoader {
     @Getter
     private final File file;
 
-    @Getter@Setter
+    @Getter
+    @Setter
     private Module module;
 
     public ModuleLoader() {
@@ -71,7 +72,7 @@ public class ModuleLoader {
 
     @SneakyThrows
     private void findAndLoadClass(String description, JarFile jarFile, File file) {
-        if(!description.contains("main:")) {
+        if (!description.contains("main:")) {
             throw new IllegalModuleDescriptionException("Description is not correct. Please check.");
         }
 
@@ -79,7 +80,7 @@ public class ModuleLoader {
                 .replace("main:", "").trim().replace(".", "/") + ".class";
 
         JarEntry jarEntry = jarFile.getJarEntry(className);
-        if(jarEntry == null) {
+        if (jarEntry == null) {
             throw new IllegalModuleDescriptionException(className + " is null. Please check your description");
         }
 
@@ -103,7 +104,7 @@ public class ModuleLoader {
 
         Object instance = loadedClass.getDeclaredConstructor().newInstance();
 
-        if(instance instanceof Module) {
+        if (instance instanceof Module) {
             Module module = (Module) instance;
 
             setModule(module);
@@ -116,7 +117,7 @@ public class ModuleLoader {
     }
 
     public void unloadModule(CommandSender commandSender) {
-        if(getModule() == null) {
+        if (getModule() == null) {
             commandSender.sendMessage(MiniMessage.miniMessage().deserialize(
                     gameModule.getPrefix() + "<red>Momentan ist kein Module geladen. Du kannst mit /gamemodule load <Module> eines laden."
             ));
@@ -125,7 +126,7 @@ public class ModuleLoader {
 
         module.disableModule();
 
-        if(module.getListeners() != null) {
+        if (module.getListeners() != null) {
             for (Listener listener : module.getListeners()) {
                 HandlerList.unregisterAll(listener);
             }
