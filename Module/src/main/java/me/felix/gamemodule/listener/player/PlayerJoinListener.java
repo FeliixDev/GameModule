@@ -1,4 +1,4 @@
-package me.felix.gamemodule.listener;
+package me.felix.gamemodule.listener.player;
 
 import me.felix.gamemodule.GameModuleBootstrap;
 import me.felix.gamemodule.file.CoreServerSettings;
@@ -20,7 +20,7 @@ public class PlayerJoinListener implements Listener {
         //state check
         if (CoreServerSettings.JOIN_MESSAGE) {
             event.joinMessage(MiniMessage.miniMessage().deserialize(
-                    gameModule.getPrefix() + player.getName() + " <white>hat den Server betreten"
+                    gameModule.getPrefix() + player.getName() + " <white>hat den Server <green>betreten"
             ));
 
             player.sendMessage(MiniMessage.miniMessage().deserialize(
