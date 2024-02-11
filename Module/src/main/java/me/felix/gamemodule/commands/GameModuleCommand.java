@@ -25,6 +25,10 @@ public class GameModuleCommand implements CommandExecutor {
                     case "list":
                         gameModule.getModuleLoader().listModules(commandSender);
                         break;
+
+                    case "unload":
+                        gameModule.getModuleLoader().unloadModule(commandSender);
+                        break;
                 }
                 break;
 

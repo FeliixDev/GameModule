@@ -15,4 +15,6 @@ public class CoreServerSettings {
 
     public static String MODULE_TO_LOAD = "null";
 
+    public static String SERVER_SOFTWARE_PATH = "homexxx.";
+
 }

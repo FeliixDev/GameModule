@@ -1,13 +1,21 @@
 package me.felix.gamemodule.module;
 
 import lombok.Getter;
-import me.felix.gamemodule.GameModuleBootstrap;
+import lombok.Setter;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+
+import java.io.File;
 
 public abstract class Module {
 
+    @Getter@Setter
+    private Plugin pluginInstance;
+
+    @Getter
+    private Listener[] listeners;
     @Getter
     public String name;
     @Getter
@@ -27,19 +35,17 @@ public abstract class Module {
     }
 
     public void registerListener(Listener... listeners) {
-        PluginManager pluginManager = getPluginInstance().getServer().getPluginManager();
+        this.listeners = listeners;
+
+        PluginManager pluginManager = pluginInstance.getServer().getPluginManager();
 
         for (Listener listener : listeners) {
-            pluginManager.registerEvents(listener, getPluginInstance());
+            pluginManager.registerEvents(listener, pluginInstance);
         }
     }
 
     public void disableModule() {
 
-    }
-
-    public GameModuleBootstrap getPluginInstance() {
-        return GameModuleBootstrap.getInstance();
     }
 
 }

@@ -33,7 +33,7 @@ public class GameModuleCommandTabCompleter implements TabCompleter {
 
                 File[] files = gameModule.getModuleLoader().getFile().listFiles();
 
-                if(files.length == 0) {
+                if(files == null || files.length == 0) {
                     return new ArrayList<>();
                 }
 

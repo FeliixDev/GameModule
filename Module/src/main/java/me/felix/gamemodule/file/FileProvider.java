@@ -17,8 +17,8 @@ public class FileProvider {
      * Files werden erstellt
      */
     public FileProvider() {
-        file = new File("plugins/GameModule/modules");
-        settingsFile = new File("plugins/GameModule", "settings.yml");
+        file = new File("plugins/gamemodule-file/modules");
+        settingsFile = new File("plugins/gamemodule-file", "settings.yml");
 
         if(!file.exists()) {
             file.mkdirs();
