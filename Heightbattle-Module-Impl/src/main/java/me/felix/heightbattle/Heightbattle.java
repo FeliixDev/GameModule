@@ -2,6 +2,7 @@ package me.felix.heightbattle;
 
 import me.felix.gamemodule.GameModuleBootstrap;
 import me.felix.gamemodule.module.Module;
+import me.felix.heightbattle.commands.HeightbattleCommand;
 import me.felix.heightbattle.listener.PlayerJoinListener;
 import me.felix.heightbattle.listener.SimulatePlayerJoinListener;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -22,6 +23,6 @@ public class Heightbattle extends Module {
                 new SimulatePlayerJoinListener()
         );
 
-
+        registerCommands(new HeightbattleCommand("heightbattle"));
     }
 }

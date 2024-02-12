@@ -2,10 +2,15 @@ package me.felix.gamemodule.module;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import me.felix.gamemodule.commands.ModuleCommand;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+
+import java.lang.reflect.Field;
 
 public abstract class Module {
 
@@ -31,8 +36,16 @@ public abstract class Module {
         //read Resources File -> Module.yml - name and more
     }
 
+    @SneakyThrows
     public void registerCommands(ModuleCommand... moduleCommands) {
+        Field field = pluginInstance.getServer().getClass().getDeclaredField("commandMap");
 
+        field.setAccessible(true);
+        CommandMap commandMap = (CommandMap) field.get(pluginInstance.getServer());
+
+        for (ModuleCommand moduleCommand : moduleCommands) {
+            commandMap.register(moduleCommand.getName(), moduleCommand);
+        }
     }
 
     public void registerListener(Listener... listeners) {

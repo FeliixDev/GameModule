@@ -1,6 +1,7 @@
 package me.felix.gamemodule;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import me.felix.gamemodule.listener.world.BlockBreakListener;
 import me.felix.gamemodule.listener.world.WeatherChangeListener;
 import me.felix.gamemodule.module.ModuleLoader;
@@ -11,9 +12,14 @@ import me.felix.gamemodule.file.CoreServerSettings;
 import me.felix.gamemodule.file.FileProvider;
 import me.felix.gamemodule.listener.player.PlayerJoinListener;
 import me.felix.gamemodule.listener.player.PlayerQuitListener;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.lang.reflect.Field;
 
 public class GameModuleBootstrap extends JavaPlugin {
 
@@ -64,9 +70,9 @@ public class GameModuleBootstrap extends JavaPlugin {
         for (Listener listener : listeners) {
             pluginManager.registerEvents(listener, this);
         }
-        ;
     }
 
+    @SneakyThrows
     private void initCommands() {
         getCommand("gamemodule").setExecutor(new GameModuleCommand());
 
