@@ -11,6 +11,7 @@
     <modules>
         <module>Module</module>
         <module>Heightbattle-Module-Impl</module>
+        <module>SkyWarsFFA-Module-Impl</module>
     </modules>
 
     <properties>
