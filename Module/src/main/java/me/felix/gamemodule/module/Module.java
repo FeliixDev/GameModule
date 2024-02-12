@@ -2,12 +2,10 @@ package me.felix.gamemodule.module;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.command.CommandExecutor;
+import me.felix.gamemodule.commands.ModuleCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
-
-import java.io.File;
 
 public abstract class Module {
 
@@ -17,6 +15,8 @@ public abstract class Module {
 
     @Getter
     private Listener[] listeners;
+    @Getter
+    private ModuleCommand[] moduleCommands;
     @Getter
     public String name;
     @Getter
@@ -31,7 +31,7 @@ public abstract class Module {
         //read Resources File -> Module.yml - name and more
     }
 
-    public void registerCommands(CommandExecutor... commandExecutors) {
+    public void registerCommands(ModuleCommand... moduleCommands) {
 
     }
 

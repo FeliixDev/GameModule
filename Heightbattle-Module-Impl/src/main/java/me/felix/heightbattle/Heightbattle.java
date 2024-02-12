@@ -6,7 +6,6 @@ import me.felix.heightbattle.listener.PlayerJoinListener;
 import me.felix.heightbattle.listener.SimulatePlayerJoinListener;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
 
 public class Heightbattle extends Module {
 
@@ -22,5 +21,7 @@ public class Heightbattle extends Module {
                 new PlayerJoinListener(),
                 new SimulatePlayerJoinListener()
         );
+
+
     }
 }
