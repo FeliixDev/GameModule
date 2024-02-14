@@ -36,11 +36,7 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void handleLogin(PlayerLoginEvent event) {
         //load player
-    }
-
-    @EventHandler
-    public void handleAsyncPlayerJoin(AsyncPlayerPreLoginEvent event) {
-        if (event.getLoginResult() == AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST) {
+        if(event.getResult() == PlayerLoginEvent.Result.KICK_WHITELIST) {
             event.kickMessage(MiniMessage.miniMessage().deserialize(
                     skyWarsFFA.getPrefix() + "<red>Momentan befindet sich dieses Module in Wartung.\n" +
                             "\n" +
