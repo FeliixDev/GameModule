@@ -46,7 +46,7 @@ public class GameModuleCommand implements CommandExecutor {
                     gameModule.getModuleLoader().loadModule(module, success -> {
                         if (success) {
                             commandSender.sendMessage(MiniMessage.miniMessage().deserialize(
-                                    "<green>Module wurde gefunden."
+                                    gameModule.getPrefix() + "<green>Das Module wurde erfolgreich geladen."
                             ));
                         } else {
                             commandSender.sendMessage(MiniMessage.miniMessage().deserialize(
