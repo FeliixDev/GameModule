@@ -4,8 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import me.felix.gamemodule.commands.ModuleCommand;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
+import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -38,14 +41,15 @@ public abstract class Module {
 
     @SneakyThrows
     public void registerCommands(ModuleCommand... moduleCommands) {
-        Field field = pluginInstance.getServer().getClass().getDeclaredField("commandMap");
+        this.moduleCommands = moduleCommands;
 
-        field.setAccessible(true);
-        CommandMap commandMap = (CommandMap) field.get(pluginInstance.getServer());
+        CommandMap commandMap = getPluginInstance().getServer().getCommandMap();
 
         for (ModuleCommand moduleCommand : moduleCommands) {
             commandMap.register(moduleCommand.getName(), moduleCommand);
         }
+
+        ((CraftServer) Bukkit.getServer()).syncCommands();
     }
 
     public void registerListener(Listener... listeners) {

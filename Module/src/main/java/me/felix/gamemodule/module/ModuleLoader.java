@@ -4,12 +4,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import me.felix.gamemodule.GameModuleBootstrap;
+import me.felix.gamemodule.commands.ModuleCommand;
 import me.felix.gamemodule.exception.IllegalModuleDescriptionException;
 import me.felix.gamemodule.file.CoreServerSettings;
 import me.felix.gamemodule.listener.custom.SimulatePlayerJoinEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -138,6 +141,17 @@ public class ModuleLoader {
                 HandlerList.unregisterAll(listener);
             }
         }
+
+        if(module.getModuleCommands() != null) {
+            CommandMap commandMap = gameModule.getServer().getCommandMap();
+
+            for(ModuleCommand moduleCommand : module.getModuleCommands()) {
+                commandMap.getCommand(moduleCommand.getName()).unregister(commandMap);
+            }
+
+            ((CraftServer) Bukkit.getServer()).syncCommands();
+        }
+
         Bukkit.getScheduler().cancelTasks(gameModule);
         setModule(null);
 
