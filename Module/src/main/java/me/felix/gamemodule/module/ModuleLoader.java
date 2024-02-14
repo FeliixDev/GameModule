@@ -106,7 +106,7 @@ public class ModuleLoader {
 
         Object instance = loadedClass.getDeclaredConstructor().newInstance();
 
-        if(gameModule.getListeners() != null) {
+        if (gameModule.getListeners() != null) {
             for (Listener listener : gameModule.getListeners()) {
                 HandlerList.unregisterAll(listener);
             }
@@ -142,11 +142,17 @@ public class ModuleLoader {
             }
         }
 
-        if(module.getModuleCommands() != null) {
+        if (module.getModuleCommands() != null) {
             CommandMap commandMap = gameModule.getServer().getCommandMap();
 
-            for(ModuleCommand moduleCommand : module.getModuleCommands()) {
-                commandMap.getCommand(moduleCommand.getName()).unregister(commandMap);
+            for (ModuleCommand moduleCommand : module.getModuleCommands()) {
+                commandMap.getKnownCommands().values().stream().filter(command -> command.getName().contains(moduleCommand.getName()))
+                        .findAny()
+                        .ifPresentOrElse(
+                                command -> {
+                                    commandMap.getKnownCommands().remove(command.getName());
+                                    commandMap.getKnownCommands().remove(command.getName() + ":" + command.getName());
+                                }, () -> Bukkit.broadcast(MiniMessage.miniMessage().deserialize("Command nicht gefunden")));
             }
 
             ((CraftServer) Bukkit.getServer()).syncCommands();
@@ -155,6 +161,7 @@ public class ModuleLoader {
         Bukkit.getScheduler().cancelTasks(gameModule);
         setModule(null);
 
+        System.gc(); //clean all unused classes
         commandSender.sendMessage(MiniMessage.miniMessage().deserialize(
                 gameModule.getPrefix() + "<green>Module wurde entladen."
         ));
